@@ -1,0 +1,135 @@
+\section{Controllability and Dynamic Programming}
+\subsection{Controllability}
+How do we know if LQR will work? That is to say, given an initial state $x_0$, is the system able to reach the stable state, i.e. the origin? We already know $Q\succeq 0,R\succ 0$, we can design these matrix to meet out requirements. What about the parameter of the system's dynamics, the matrix $A$ and $B$, they are coming from the robots mechanics design, we can't simply design them as $Q$ and $R$? For the time-invariant case, there's a simple answer, for any initial state $x_0$, $x_N$ is given by:
+\begin{equation}
+    \begin{array}{rl}
+        x_N&		=Ax_{N-1}+Bu_{N-1}\\
+        &		=A\left( Ax_{N-2}+Bu_{N-2} \right) +Bu_{N-1}\\
+        &		\vdots\\
+        &		=A^Nx_0+A^{N-1}Bu_0+A^{N-2}Bu_1+\cdots +Bu_{N-1}\\
+        &		=\underset{C}{\underbrace{\left[ \begin{matrix}
+        B&		AB&		A^2B&		\cdots&		A^{N-1}B\\
+    \end{matrix} \right] }}\left[ \begin{array}{c}
+        u_{N-1}\\
+        u_{N-2}\\
+        \vdots\\
+        u_0\\
+    \end{array} \right] +A^Nx_0\\
+    \end{array}
+\end{equation}
+
+$C$ is a ``short, fat'' matrix.This is equivalent to a smallest L2 norm problem for $u_{0:N-1}$:
+\begin{equation}
+    \left[ \begin{array}{c}
+        u_{N-1}\\
+        u_{N-2}\\
+        \vdots\\
+        u_0\\
+    \end{array} \right] =\underset{\text{Pseudo}-\text{inverse}}{\underbrace{\left[ C^T\left( CC^T \right) ^{-1} \right] }}\left( x_N-A^Nx_0 \right) 
+\end{equation}
+
+To make $CC^T$ be invertible, the rank of $C$ must be $n=\text{dim}(x)$. Actually, I would get to stop at $n$ time steps in $C$ because the Cayley-Hamilton theorem says that $A^N$ can be written in terms of a linear combination of lower powers of A (every matrix satisfies its own characteristic equation):
+
+\begin{equation}
+    A^N = \sum_{k=0}^{N-1}\alpha_kA^k\qquad\text{for some }\alpha_k
+\end{equation}
+
+Therefore adding more time steps/columns to $C$ can't increase the rank:
+
+\begin{equation}
+    C = \underset{\text{Controllability Matrix}}{\underbrace{\left[ \begin{matrix}
+        B&		AB&		A^2B&		\cdots&		A^{n-1}B\\
+    \end{matrix} \right] }}
+\end{equation}
+
+tine-variant system, invariant subspace? have to look at the whole trajectory instead of $n$ time steps, because it doesn't have this nice limiting property.
+
+N power of matrix $A$ has bad conditioning number, so we don't like the shooting method to solve LQR. If N is a small number, the Controllability matrix is fine.
+
+Controllability is not fully actuated.
+
+This is the end of the introduction of LQR, we'll now switch gears considerably and tell the story from a very different angle.
+
+\subsection{Bellman's Principle}
+
+Optimal control problems have an inherently sequential structure. Obviously, past control inputs only affect future states, future control inputs can't affect past states. Bellman's Principle (The Principle of Optimality) states the consequence of this for optimal trajectories: \textbf{Sub-trajectories of optimal trajectories have to be optimal for appropriately defined sub-problems, if not, I will find an optimal trajectory to substitute the original one.}
+
+\subsection{Dynamic Programming}
+
+Bellman's Principle suggests starting from the end of the trajectory and working backwards. We've already seen hints of this from the Riccati equation and Pontryagin. In this section, we define ``optimal cost-to-go'' a.k.a ``value function'' $V_k(x)$, which encodes cost incurred starting from state $x$ at time $k$ if we act optimally. For LQR:
+
+\begin{equation}
+    V_N(x) = \frac{1}{2}x^TQ_Nx=\frac{1}{2}x^TP_Nx
+\end{equation}
+
+Back up one step and calculate $V_{N-1}(x)$:
+
+\begin{equation}
+    \begin{array}{rl}
+        V_{N-1}&		=\min_u\frac{1}{2}x_{N-1}^{T}Qx_{N-1}+\frac{1}{2}u^TRu+V_N\left( A_{N-1}x_{N-1}+B_{N-1}u \right)\\[6.18pt]
+        &		\Rightarrow\min_u\frac{1}{2}u^TRu+\left( A_{N-1}x_{N-1}+B_{N-1}u \right) ^TP_N\left( A_{N-1}x_{N-1}+B_{N-1}u \right) \text{PD quadratic}\\[6.18pt]
+        \xRightarrow{\nabla _u=0}&		Ru+B_{N-1}^{T}P_N\left( A_{N-1}x_{N-1}+B_{N-1}u \right) =0\\[6.18pt]
+        \Rightarrow&		u_{N-1}=-\underset{K_{N-1}}{\underbrace{\left( R_{N-1}+B_{N-1}^{T}P_NB_{N-1} \right) ^{-1}B_{N-1}P_NA_{N-1}}}x_{N-1}\text{is a function of }x\\[6.18pt]
+        \Rightarrow&		V_{N-1}\left( x \right) =\frac{1}{2}x^T\underset{P_{N-1}}{\underbrace{\left[ Q_{N-1}+K_{N-1}^TR_{N-1}K_{N-1}+\left( A_{N-1}-B_{N-1}K_{N-1} \right) ^TP_N\left( A_{N-1}-B_{N-1}K_{N-1} \right) \right]}} x \\[6.18pt]
+        \Rightarrow&		V_{N-1}\left( x \right) =\frac{1}{2} x^T P_{N-1} x
+    \end{array}
+    \label{equ:lqr-dp}
+\end{equation}
+
+Now we have a backward recursion for $K$ and $P$ that we iterate until $k=0$. This is Riccati again! This $P$ is symmetric, while the Riccati one is not, $P$ is supposed to be symmetric, because of the quadratic form, this $P$ is better, because it guarantees symmetry of the solution it also guarantees positive definiteness, which maintains perfect numerical property. 通过动态规划的推导，从更本质的原因分析了，为什么LQR的解会具有那样的一个性质，而不是仅仅是在玩数字游戏（因为贝尔曼准则告诉我们，应该从后面开始向前迭代，并且每一步根据最优的Cost-to-Go都可以解出一个最优的反馈控制率）。
+
+BTW, matrix $Q, R$ ought to be tuned, similar to PID tuning.The other thing is the absolute values of $Q$ and $R$ are not what matters, it is the relative scaling between them.
+
+For a more general problem, we have backward DP algorithm:
+
+\begin{algorithmic}[1]
+    \STATE $V_N(x)\gets l_N(x)$
+    \STATE $k\gets N$
+    \WHILE {$k>1$}
+      \STATE $V_{k-1}(x) = \min_{u\in\mathcal{U}}\left[l\left(x,u\right)+V_k\left(f\left(x,u\right)\right)\right]$
+      \STATE $k\gets k-1$
+    \ENDWHILE
+\end{algorithmic}
+
+If we know $V_k(x)$, the optimal policy is:
+\begin{equation}
+    u_{k}(x) = \arg\min_{u\in\mathcal{U}}\left[l\left(x,u\right)+V_{k+1}\left(f\left(x,u\right)\right)\right]
+\end{equation}
+
+In reinforcement learning, we have Q-function or action-value other than value function, usually it is denoted as $Q(x,u)$, but we'll use $S(x, u)$ to avoid confusion with LQR:
+\begin{equation}
+    S_k(x,u)=l(x,u)+V_{k+1}(f(x,u)) \Rightarrow u_k(x)=\arg\min_{u} S_k(x, u)
+\end{equation}
+
+Avoid needs for explicit dynamics model: So, why do we prefer $S(x,u)$ to $V(x)$? If we do this, I don't need the $f(x,u)$. If I have the $V$ and I want to go solve this problem on-line, I need to have the Dynamics Model $f$ to plug in. If I instead compute this action value thing it's basically got the $f$ buried inside it implicitly. So when I go online I just need the $S$, I don't need to have access to the $f$, the Dynamics model. If you're doing model free RL, this needs a bunch of sampling and experiments and compute this $S$ without needing to know $f$.
+
+Although DP is sufficient for global optimum (not local neighborhood), it has several drawbacks:
+\begin{itemize}
+    \item Only tractable for simple problems (LQR or low dimensional).
+    \item $V(x)$ stays quadratic for LQR but becomes impossible to write analytically for even simple nonlinear problems.
+    \item Even if we could, $\min S(x,u)$ will be non-convex and possibly hard to solve.
+    \item Cost of DP blows up with state dimension due to difficulty of representing $V(x)$.
+\end{itemize}
+
+Despite the shortages, there are some reason we should care about this:
+\begin{itemize}
+    \item Approximate DP with a function approximation for $V(x)$ or $S(x,u)$ is very powerful.
+    \item Forms basis of lots of modern RL.
+    \item One of the key ideas behind MPC. 
+    \item DP generalizes to stochastic problems (just wrap everything in expectation operators), while Pontryagin does not.
+\end{itemize} 
+
+\subsection{What are the Lagrangian Multipliers?}
+Recall Riccati derivation from QP:
+\begin{equation}
+    \lambda_k=P_kx_k
+\end{equation}
+From DP:
+\begin{equation}
+    V_k(x)=\frac{1}{2}x^TP_kx
+\end{equation}
+Therefore, we get:
+\begin{equation}
+    \lambda_k = \nabla_xV_k(x)
+\end{equation}
+Lagrangian multipliers are cost-to-go's gradients, and this conclusion carries over to nonlinear settings (not just LQR). It seems useful to RL, but no one does this, I don't know the reason.

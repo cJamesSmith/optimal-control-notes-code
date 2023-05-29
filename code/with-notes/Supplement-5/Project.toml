@@ -1,0 +1,7 @@
+[deps]
+Convex = "f65535da-76fb-5f13-bab9-19810c17039a"
+ECOS = "e2685f51-7e38-5353-a97d-a921fd2c8199"
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+JupyterFormatter = "b8b539d8-55b4-4e60-a505-d7876c054e58"
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
+PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"

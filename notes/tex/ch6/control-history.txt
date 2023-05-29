@@ -1,0 +1,1519 @@
+welcome one and all welcome back super sex to have you here
+欢迎大家回来超级性爱让你在这里
+
+I think it is time so
+我想是时候了所以
+
+um today we are going to start actually legit doing optimal control we spent you
+今天我们要开始真正合法地进行最佳控制我们花了你知道
+
+know our first couple of weeks doing a nice little
+我们的前几周做了一个很好的小
+
+gentle introduction to uh you know Dynamics and how to discretize them and
+温柔介绍呃你知道动力学 以及如何离散化它们，
+
+then control and then optimization you know how to do basic optimization stuff
+然后控制，然后优化，你知道如何做基本的优化工作，
+
+and now I think we are ready to dig in so
+现在我认为我们已经准备好深入研究，所以
+
+um to sort of set the stage and have a little bit of a palette cleanser you
+嗯，以奠定基础，并有一点调色板清洁剂，你
+
+know kind of get us out of the intro phase and into the meat of the class
+知道的 让我们走出介绍阶段，进入课堂的实质，
+
+um I wanted to kind of do this little history lesson thing and and maybe give
+嗯，我想做这个小小的历史课，也许可以给
+
+you a bit of a tour of you know historical tour of some of these topics
+你一些你知道的一些主题的历史之旅，
+
+uh hints that what's to come just as a little you know I don't know fun thing
+呃暗示什么 来一点你知道我不知道有趣的事情
+
+uh you know ask questions whatever um so a brief history of control
+呃你知道问问题无论如何嗯所以一个控制的简短历史
+
+uh click in the beginning there was uh the recristocrone problem
+呃点击开始有呃recristocrone问题
+
+has anyone heard of this before what so yeah someone who's heard about
+有没有人听说过这个之前什么所以是的有人谁 听说过
+
+this what is this thing
+这是什么东西，
+
+um
+
+
+yeah so it's it's the minimum time curve for a ball sliding down a ramp so you
+嗯，所以它是球滑下斜坡的最短时间曲线，所以你
+
+say I point a point B um you know what B being lower than a
+说我指向一个点 B嗯，你知道 B 低于 a
+
+and I want to make a track or a ramp or whatever connecting those two points
+，我想制作一条轨道或斜坡 或者任何连接这两点的东西，
+
+such that a ball released at Point a will land at point B in minimum time
+这样在 A 点释放的球将在最短的时间内落在 B 点，
+
+as who who knows what the solution to this is
+谁知道解决这个问题的方法是什么是
+
+a cycloid yeah which is a weird not obvious thing at all right so which one
+摆线，是的，这是一个奇怪的不明显的事情，所以哪一个
+
+of those that shapes this fastest is the question right so yes do you know the
+形成这个最快的问题是正确的，所以是的，你知道
+
+history of this anybody it's a fun history problem so this was
+这个人的历史吗？这是一个有趣的历史问题，所以这就
+
+like um posed as a like challenge to the like math physics Community
+像是对数学物理社区的一个类似的挑战，
+
+um in like a what you know at the time would have been a journal basically by
+就像你当时所知道的那样基本上是
+
+um um by one of the bernoullis there are
+一个伯努利的期刊，伯努利的期刊
+
+too many bernoullis I don't know which Bernoulli but one of the bernoullis uh
+太多了，我不知道哪个伯努利，但伯努利的一个，呃，
+
+it was posted as like a challenge problem in one of these like journals
+它被作为一个挑战问题发布在其中一个期刊中，比如
+
+proto-journals and like the 1690s and it was solved independently by a bunch of
+原始期刊之类的 1690年代，它是由一群人独立解决的，
+
+people um Newton liveness and lopital among
+嗯，牛顿的活性和洛皮塔尔，
+
+them but Newton's solution is the most famous one is the one we still remember
+但牛顿的解决方案是最著名的一个，也是我们仍然记得的，
+
+because it actually laid the foundations of
+因为它实际上奠定了嗯一大堆
+
+um a whole bunch of uh what became modern optimal control theory so this is
+成为现代最优的基础 控制理论所以这就是用
+
+the the solution written out in like modern notation
+现代符号写出来的解决方案，
+
+um this is how you get it you're minimizing this cost function thing
+嗯，这就是你如何得到它，你正在最小化这个成本函数，
+
+which is the time total time but you basically write this down as like
+即时间总时间，但你基本上把它写下来，就像
+
+minimizing this integral cost function thing right along a trajectory which is
+最小化这个积分成本函数一样。沿着一条轨迹，这
+
+very much the flavor of trajectory optimization kind of stuff that we're
+很像我们要做的轨迹优化之类的东西，
+
+gonna do and um Newton basically invented what's
+嗯，牛顿基本上发明了
+
+called calculus of variations now this idea of minimizing functions and stuff
+所谓的变分法，现在这个最小化函数的想法和
+
+like this which we're going to do a little bit
+类似的东西我们要做一点 位
+
+um he basically invented that to solve this problem
+嗯他基本上发明了这个来解决这个问题
+
+um and you know we still use it and stuff so which is kind of cool and the
+嗯你知道我们仍然使用它和东西所以这有点酷而且解决
+
+solution turns out to be this shape called a cycloid which is the shape you
+方案结果是这种称为摆线的形状，
+
+get if you trace out a like point on the rim of a circle as it rolls kind of
+如果你描绘出类似的形状，你就会得到这个形状 圆的边缘上的点，因为它滚动
+
+weird and super not obvious and super non-intuitive and we would never guessed
+有点奇怪，超级不明显，超级不直观，我们永远不会猜到
+
+this but it turns out that's the the optimal shape of the ramp here to get
+这一点，但事实证明，这是获得
+
+this minimum time solution or ball rolling down the ramp kinda
+最短时间解决方案或球滚动的斜坡的最佳形状 沿着坡道走下去
+
+weird um okay so uh so this was kind of you
+有点奇怪，嗯，好吧，所以，这是一种你
+
+know that solution and it turns out that led to this entire kind of little
+知道的解决方案，事实证明，它导致了整个
+
+subfield of mathematics called calculus of variations which we're going to talk
+数学的一个小子领域，称为变分法，我们将
+
+about a little tiny bit here but generally avoid because the math gets a
+在这里稍微讨论一下 但通常会避免，因为数学变得
+
+little gnarly and I find it's generally just not that necessary for doing
+有点粗糙，我发现它通常对于做
+
+practical stuff but it's the subject of basically minimizing continuous with
+实际的事情来说并不是那么必要，但它的主题是基本上最小化相
+
+respect to continuous functions so all the optimization we did was minimizing
+对于连续函数的连续，所以我们所做的所有优化基本上都是最小化相
+
+basically respect to finite dimensional vectors like some X and RN here you're
+对于有限维向量就像这里的一些 X 和 RN 一样，你正在
+
+minimizing some continuous function X of T which is a little weird and we're
+最小化 T 的一些连续函数 X，这有点奇怪，我们
+
+going to talk about that today and sort of some of the implications of that but
+今天将讨论它以及它的一些含义，但
+
+turns out right so he did it for this you know minimum time problem which very
+结果是正确的，所以他这样做是为了这个你知道最短时间问题，它非常
+
+much has the flavor of an optimal control problem but the math is useful
+具有最佳控制问题的味道，但数学
+
+in tons of other applications ranging from Statics so like it turns out also
+在静力学等许多其他应用中都很有用，所以事实证明，
+
+how you get the shape of a hanging cable or chain or something Optics it's for
+你如何获得悬挂电缆或链条或其他光学物体的形状 对于
+
+Matt's principle uh if you've heard of that it's very much this kind of minimum
+马特原理呃，如果你听说过，这就是这种最小
+
+time flavor classical mechanics this is Hamilton's principle least action how
+时间风味经典力学，这是汉密尔顿原理最小作用如何
+
+you get the oil LaGrange equations for lagrangian mechanics finite element
+获得油拉格朗日方程拉格朗日力学有限元
+
+methods this is the so-called weak form that you use to develop FEA methods uh
+方法这就是所谓的弱形式你用来开发FEA方法呃
+
+mechanical engineering it's also um General in gr it's kind of the
+机械工程它也是嗯一般在gr它是一种
+
+standard approach and it's one of the several approaches to doing quantum
+标准方法，它是进行量子力学的几种方法之一，
+
+mechanics a so-called path integral approach so it shows up in a ton of
+所谓的路径积分方法，所以它出现在
+
+areas of physics in addition to what we're going to talk about optimal
+物理的很多领域 除了我们要讨论的最优
+
+control kind of useful kind of interesting so that's where that comes
+控制之外，还有一些有用的、有趣的内容，这就是它的
+
+from and that's one of the sort of like foundational little subtopics of what
+来源，这是我们要讨论的基本小子主题之一，
+
+we're going to talk about um and then uh sort of moving forward in
+嗯，然后呃排序 时间向前推进的
+
+time another thread does anyone know what this thing is
+另一个线程有谁知道这东西是什么
+
+yeah yeah so it's called a centrifugal governor
+是的，所以它被称为离心调速器
+
+and um you know what it does can we describe and describe what it
+，嗯，你知道它的作用，我们可以描述和描述它
+
+actually does
+实际上的作用是的，
+
+yeah so like the way I would describe it is so you have like some spinning you
+就像我描述它的方式一样，所以你 就像一些旋转，你
+
+know the the output shaft say of a steam engine and if you wanted to spin at
+知道蒸汽机的输出轴，如果你想以
+
+constant velocity roughly speaking what will happen is those two masses
+恒定速度旋转，粗略地说，会发生什么，那两个质量
+
+um will get pulled outward like this under centrifugal force as it spins
+会在离心力的作用下像这样被向外拉，因为它旋转得
+
+faster and um this thing's hooked up to a valve
+更快，嗯这个 这个东西连接到一个阀门，
+
+that opens and closes to like um to basically the throttle on the
+该阀门打开和关闭，就像嗯，基本上是发动机上的油门，
+
+engine right so the um the sort of mass of the ball counteracts you know the and
+所以嗯，球的质量抵消了你知道的，
+
+the the speed of this thing spinning around and it sort of settles into this
+这个东西旋转的速度，它有点稳定下来 这个
+
+um and it like as they're pulled upward right it closes the valve more as they
+嗯，就像当它们被向右拉动时，它会更多地关闭阀门，当它们
+
+fall down it opens the valve more it basically controls the throttle right so
+落下时，它会更多地打开阀门，它基本上控制着油门，所以
+
+this thing was is very clever it was invented by uh Christian Huygens and
+这个东西非常聪明，它是由呃克里斯蒂安·惠更斯和
+
+other famous like physics name and um was used shortly thereafter by James
+其他著名的人发明的此后不久，詹姆斯·瓦特（James
+
+Watt on the first steam engines in like the 1780s and this made this is like one
+Watt）在 1780 年代的第一台蒸汽机上使用了物理名称，嗯，这使得这就像
+
+of the big things in the first Industrial Revolution it enabled like
+第一次工业革命中的一件大事，它使
+
+all these kind of steam engines locomotives trains blah blah all this
+所有这些蒸汽机、机车、火车等等都成为可能。 这种
+
+kind of Factory stuff huge part of like the Industrial Revolution right so it's
+工厂的东西很大一部分就像工业革命一样，所以它是
+
+invented in the late 1700s and this is feedback right this thing is doing
+在 1700 年代末发明的，这就是反馈，这个东西
+
+feedback control in like a mechanical mechanism but no one like actually
+就像机械机构一样进行反馈控制，但没有人真正在
+
+theoretically modeled this or understood the math behind it for like another
+理论上对其进行建模或理解其背后的数学 因为就像另一个
+
+Century um the first paper that actually worked
+世纪一样，第一篇真正解决
+
+the math out on this came about 90 years later in uh 1868 and was by another
+这个问题的论文发表在大约 90 年后的 1868 年，作者是另一位
+
+famous physics name James Clerk Maxwell so Maxwell of Maxwell's equations from
+著名的物理学家詹姆斯·克拉克·麦克斯韦 (James Clerk Maxwell)，所以麦克斯韦的
+
+electricity of magnetism wrote the first paper analyzing this in what we would
+磁电麦克斯韦方程组写了第一篇分析此问题的论文 我们所说的
+
+call Modern uh basically developed all the math that in that paper that you
+现代呃基本上开发了在那篇论文中你
+
+would see in any of your standard undergrad courses on on feedback control
+会在任何关于反馈控制的标准本科课程中看到的所有数学，
+
+so all the siso you know root Locus Bodhi
+所以你知道的所有 siso 根轨迹Bodhi
+
+um Laplace transform stuff all of that is in this 1868 paper by Maxwell and
+um 拉普拉斯变换的东西所有这些都在这个 1868 年 Maxwell 的论文，
+
+it's actually amazingly readable it's on the internet you can find it on like
+它实际上具有惊人的可读性，它在互联网上，你可以在 archive.org 或其他网站上找到它，
+
+archive.org or whatever um and it's like it looks like a paper
+它看起来像是一篇
+
+that you would rebound basically and like all the math is there from your
+你基本上会反弹的论文，就像所有的数学都来自你的
+
+like undergrad uh you know siso controls course kind of a fun if you're if you're
+本科生呃你 知道siso控制课程有点有趣，如果你是
+
+a nerd and you're like you know this kind of thing I actually highly
+一个书呆子，你就像你知道这种事情我实际上强烈
+
+recommend Googling that paper like Maxwell steam Governors or whatever it's
+建议谷歌搜索像麦克斯韦蒸汽调速器或其他什么它有点
+
+kind of crazy how readable it is from like 1868.
+疯狂它的可读性如何 从1868 年开始。
+
+um and like you would be familiar if you've taken an undergrad controls
+嗯，如果你参加过本科控制
+
+course you would like understand all of that it's really funny yeah a lot of
+课程，你会很熟悉，你会想了解所有这些，这真的很有趣，是的，有很多
+
+music boxes oh cool yeah yeah okay that's super fun to like get the the
+音乐盒，哦酷，是的，好吧，喜欢获得速度是非常有趣的 是一样的，
+
+speed to be the same yeah yeah that's very clever yeah yeah cool cool
+是的，这非常聪明，是的，很酷，好吧，嗯，
+
+okay um so that's fun uh so this yeah so that
+所以这很有趣，所以，是的，所以
+
+that Maxwell Paper was basically the first paper to do what would be called
+麦克斯韦论文基本上是第一篇做所谓
+
+classical control theory um from there you get into the so-called
+经典控制理论的论文，从那里你就进入了所谓的- 被
+
+like classical control era right which is like kind of early early 20th century
+称为古典控制时代，就像20世纪初期一样，
+
+uh leading up to like kind of just past World War II tons of cool stuff was done
+导致了二战刚刚过去的时期，在这个时期完成了很多很酷的事情，其中
+
+in this period um a lot of it before there was any
+很多是在有任何理论之前，
+
+Theory um which honestly this kind of reminds
+老实说，这 有点让
+
+me of like where we're at right now with with deep learning like so much of this
+我想起我们现在在深度学习方面的处境，就像很多
+
+stuff is like we're just trying to step away of real Theory so the first Auto uh
+东西就像我们只是试图摆脱真正的理论一样，所以第一个汽车呃
+
+first autopilot for an airplane is this guy those 1914 doing like kind of PID
+第一个飞机自动驾驶仪就是这个人 1914 年，我们
+
+control with like hand-tuned games that no one really understood if it was going
+用手动调整的游戏进行了类似的 PID 控制，没有人真正理解它是否
+
+to be stable or not um the other thing was done around this
+会稳定，嗯，大约在这个时候完成的另一件事
+
+time was the first automatic basically autopilot for a ship was done in 1911.
+是第一个基本上自动驾驶的船舶于 1911 年完成。
+
+um all this was kind of basically PID um and then starting in the 20s you
+嗯，所有这些基本上都是 PID嗯，然后从 20 年代开始，你
+
+started to see the stuff get formalized and they're starting to be Theory so
+开始看到这些东西被形式化，它们开始成为理论，所以
+
+like all the stuff you basically learned in your undergrad you know kind of
+就像你在本科时基本上学到的所有东西一样，你知道
+
+frequency domains ISO controls class that was all developed so like Nyquist
+频域 ISO 控制 类都是像奈奎斯特一样开发的，
+
+all those famous names those were 1920s roughly when all this stuff was
+所有那些著名的名字大约是在 1920 年代，当时所有这些东西都被
+
+formalized and theoretically analyzed and people figured out how to like
+形式化并进行了理论上的分析，人们想出了如何
+
+guarantee stability of these things and a lot of that work was done actually in
+保证这些东西的稳定性，并且很多工作实际上是在
+
+the context of vacuum tube amplifiers um in ee so like a lot of that stuff was
+真空管放大器嗯，就像很多东西都是
+
+ee stuff but back then people were doing this kind of thing
+ee 的东西，但当时人们正在做这种事情，
+
+um and then this all took a huge leap forward because of World War II you know
+嗯，然后由于第二次世界大战，这一切都取得了巨大的飞跃，你知道
+
+that that bright picture is that's a V2 so this was like the first
+那张明亮的图片是V2，所以这就像纳粹在第二次世界大战中建造的第一枚
+
+rocket that reached space was built by the Nazis in World War II and
+到达太空的火箭，其中
+
+um a big part of this is solving the so-called rocket problem which is how
+很大一部分是解决所谓的火箭问题，即如何
+
+you get a rocket to go straight up and not like go nuts and fall over and crash
+让火箭直线上升，而不是像走一样 坚果、翻倒和坠毁的
+
+rockets are inherently unstable you can think about it as a big inverted
+火箭本质上是不稳定的，你可以把它想象成一个大倒立
+
+pendulum so in order to get a rocket to actually fly you need to do basically
+摆，所以为了让火箭真正飞行，你需要
+
+digital feedback control on the rocket nozzle at the bottom so the whole rocket
+对底部的火箭喷嘴进行基本的数字反馈控制，这样整个火箭
+
+engine gimbals and this thing's basically a giant inverted pendulum uh
+发动机 万向节，这东西基本上是一个巨大的倒立摆，嗯，
+
+so early Rockets there's tons of blooper reel footage of rockets from like the
+所以早期的火箭有大量的
+
+40s and 50s going like all kinds of crazy and crashing and stuff most of it
+40 年代和 50 年代的火箭片段，就像各种疯狂和坠毁之类的东西，其中大部分与
+
+has to do with control actually so it's an inverted pendulum but it turns out
+控制实际上有关，所以它是倒立的 摆，但事实证明
+
+it's a floppy inverted pendulum they're big enough that they're and they're
+这是一个软倒立摆，它们足够大，而且足够
+
+light enough that they're very flexible there's a lot of like on model Dynamics
+轻，所以非常灵活，
+
+in the flexible modes of a rocket and so there's a lot of early work on this free
+在火箭的灵活模式中有很多像动力学模型，所以有一个 关于这种免费
+
+consumer control stuff and trying to make rockets work and a lot of that done
+消费者控制的东西的很多早期工作，并试图让火箭发挥作用，其中很多工作是
+
+was done in World War II and kind of the Year shortly thereafter which leads us
+在第二次世界大战以及此后不久的一年中完成的，这将我们
+
+up to the so-called modern control era which
+带入了所谓的现代控制时代，这个时代
+
+started right around 1960 with another famous name I'm sure many have heard of
+开始了 大约在 1960 年，另一个著名的名字我相信很多人都听说过，
+
+which is Rudolph Coleman of Coleman filter Fame so it turns out Coleman
+这是科尔曼滤波器名声大噪的鲁道夫·科尔曼，所以事实证明，科尔曼
+
+um basically around the same time developed both the Coleman filter and
+基本上在同一时间开发了科尔曼滤波器和
+
+the corresponding control theory which is lqr which is all kind of the same
+相应的控制理论，即lqr，它是所有种类的 相同的
+
+math so that kind of checks out and makes sense and essentially where that
+数学，所以这种检查是有道理的，本质上是
+
+came from why it's a thing and everything so before this is kind of
+从哪里来的，为什么它是一个东西和一切，所以在这之前是
+
+this siso frequency domain LaPlace era that you would have learned in an
+这种siso频域拉普拉斯时代，你会在
+
+undergrad control class which was really pre-computer math right and then what
+本科控制课程中学到这真的是前计算机数学是正确的，然后
+
+happened in this era that like really made the difference was computers came
+在这个时代发生的事情真正产生了影响，那就是计算机的
+
+along and you could actually like every University had a computer in the
+出现，实际上，从这个时候开始，每所大学的地下室都有一台计算机
+
+basement beginning around this time and so it started to become possible to
+，因此解决大型矩阵开始成为可能
+
+solve large Matrix equations pretty easily and then you had the Apollo
+方程式很容易，然后你有了阿波罗
+
+program which was a major major impetus for doing more digital Computing stuff
+计划，它是做更多数字计算
+
+and more stuff in control and that's a picture of the Apollo guidance computer
+和更多控制东西的主要推动力，这是阿波罗制导计算机的图片，
+
+that's the thing that actually flew on the Apollo missions
+它是阿波罗任务中实际飞行的东西，
+
+to get you to the moons it's like this big ish and was a legit computer that
+可以让你 卫星就像一个大的东西，是一台合法的计算机，
+
+could do floating Point math um and so uh this let people actually do
+可以做浮点数学嗯，所以呃这让人们实际上做
+
+kind of the stuff we do now right so Coleman developed
+我们现在做的事情，所以科尔曼开发了
+
+um these the so-called states-based methods using lots of linear algebra um
+嗯这些所谓的基于状态的方法使用很多 线性代数嗯，
+
+for doing what we're going to do very soon and that sort of all started
+用于做我们很快要做的事情，这一切开始
+
+happening in the 60s it was enabled by having computers but it also opened up
+发生在 60 年代，它是通过计算机实现的，但它也开辟了
+
+uh doing way way more complex control so basically all the old school ee type
+呃，做更复杂的控制方式，所以基本上所有老式的 ee 类型
+
+siso stuff um and the frequency domain really only
+siso 东西嗯，频域实际上只
+
+works for single input single output systems uh very well whereas this stuff
+适用于单输入单输出系统，非常好，而这个东西
+
+now you're talking about large multi-degree Freedom systems you can
+现在你正在谈论大型多自由度系统，你可以
+
+handle with big matrices which you know
+用大矩阵来处理，你知道
+
+Rockets flying to the moon and and robots right High degree Freedom robots
+火箭飞向月球和 和机器人吧 高度自由的机器人，
+
+that's sort of all enabled by computers being able to do large Matrix math
+这一切都是由计算机实现的，能够做大型矩阵数学
+
+um funny story does anyone know the story of the original Coleman filter
+嗯有趣的故事有人知道原始科尔曼滤纸的故事吗
+
+paper this is um Coleman couldn't get it
+这是嗯科尔曼无法
+
+published anywhere got rejected like everywhere and it ended up getting
+在任何地方发表它像其他地方一样被拒绝 它最终
+
+published in some obscure Journal because he could not get it published
+发表在一些不起眼的期刊上，因为他今晚无法发表它，
+
+tonight
+
+
+that's right he was like an ee map guy and he couldn't publish in any of their
+是的，他就像一个 ee 地图人员，他无法在他们的任何期刊上发表
+
+journals and it ended up getting published in some like second tier mechi
+，它最终发表在一些二级机械杂志上
+
+Journal because he couldn't get it Fellowship anywhere else which is
+日记，因为他在其他任何地方都找不到奖学金，这很
+
+hilarious um and then also this time uh so all
+搞笑，嗯，然后这次也发生了，所以所有
+
+that stuff happened and then really because of Apollo that the Coleman paper
+这些事情都发生了，然后真的是因为阿波罗，科尔曼的论文
+
+was like 61 maybe the original comment paper paper uh and then
+就像 61 可能是最初的评论论文论文呃，然后
+
+um a guy named Schmidt who was working at NASA Ames basically was tasked with
+嗯a 一个名叫施密特的人在美国宇航局艾姆斯工作，他的任务基本上是
+
+figuring out how to navigate to the moon and like uh went home for a weekend read
+弄清楚如何导航到月球，然后周末回家阅读
+
+the Coleman filter paper and invented the extended common filter and the
+科尔曼滤纸，并像周末一样发明了扩展通用滤波器和
+
+square root common filter like in a weekend to fly Apollo to the moon and
+平方根通用滤波器让阿波罗飞向月球，
+
+then went into work on Monday with the answer and they coded it up and made it
+然后在周一带着答案开始工作，他们将其编码并使其
+
+work on that box and we flew to the moon that's basically the story so that the
+在那个盒子上工作，我们飞向月球，这基本上就是故事，因此
+
+extended common filters often called the Hallman Schmidt filter because the
+扩展的通用过滤器通常称为霍尔曼施密特过滤器 因为
+
+original common paper is for a linear system right and obviously flying to the
+最初的普通论文是针对线性系统的，显然飞向
+
+Moon is a non-linear problem so uh so we figured out you know the extended common
+月球是一个非线性问题所以呃所以我们发现你知道扩展的公共
+
+filter where you basically linearize right and whatever and do it on a
+过滤器，你基本上可以在其中线性化右等等并在非线性上进行
+
+non-linear system and that's that's history and that was done only a few
+系统，这就是历史，这是在
+
+years after the original paper and then they flew it to the moon in 69 you know
+最初的论文发表几年后完成的，然后他们在 69 年将其飞向月球，你知道，在
+
+like a couple years after that so kind of insane the pace of what happened in
+那之后的几年里，
+
+that period is is a pretty amazing um the other thing to mentioned is in
+那段时期发生的事情的速度是疯狂的 相当惊人，嗯，另一件事要提到的是
+
+parallel with all this so that's like the American side of the story
+与所有这一切并行的，所以这就像故事的美国方面，
+
+um also uh at the same time in the 60s uh was this other couple other parallel
+嗯，也在 60 年代的同一时间，嗯，另外一些平行的
+
+developments one was in the Soviet Union they also had a space program and we're
+发展，一个是在苏联，他们也有 一个太空计划，我们
+
+also doing things um and there the big name is Lev
+也在做一些事情，嗯，那里的大人物是
+
+pontriagen has anyone heard of this guy country August maximum or minimum
+列夫·庞特里亚根（Lev pontriagen），有谁听说过这个国家的八月最大或最小
+
+principle we're just going to talk about today so that was happening in the
+原则，我们今天要讨论的是，这发生在
+
+Soviet Union around the same time and they were interested in optimizing
+苏联周围 与此同时，他们对优化
+
+rocket trajectories or missile trajectories or whatever
+火箭弹道或导弹弹道或其他什么感兴趣，
+
+um and so that's kind of that theory was developed around there
+嗯，所以这种理论是在那里发展起来的，
+
+um and then in the U.S um there's Richard Bellman also at the
+然后在美国，理查德·贝尔曼也在
+
+same time late 50s through the 60s doing dynamic programming which you probably
+同一时间在 50 年代末到 60 年代进行动态规划 你可能
+
+also heard about so that was all kind of in the same within a decade all of that
+也听说过，所以在十年内所有这些事情都
+
+happened which is pretty nuts uh okay cool so
+发生了，这非常疯狂，嗯，好吧，所以
+
+um kind of also so we that was the 60 the 1960s was when all this stuff was
+嗯，所以我们那是 60 年代，1960 年代，所有这些东西都
+
+kind of really done um kind of you know
+有点 真的完成了，嗯，你知道
+
+around the same time slash later there were a few other kind of things that
+大约在同一时间斜线之后，还有一些其他类型的东西与
+
+kind of go with went with this um one of which was adaptive control
+此相匹配，其中之一是自适应控制，
+
+which is concerned with like online adaptation to unmodeled things
+它涉及到对未建模事物的在线适应，
+
+um also known as online learning Navy and RL these are the same departments
+嗯也称为 在线学习 Navy和 RL 这些是相同的部门
+
+this is you know two examples of this this is a really old example from the
+这是你知道的两个例子这是一个非常古老的例子，来自
+
+late 50s early 60s the X-15 um where they actually did a bunch of
+50 年代末 60 年代初 X-15嗯，他们实际上做了很多
+
+this stuff they literally were doing online gradient descent on the control
+这些东西，他们实际上是在做在线梯度
+
+policy on that thing with a pilot in it and someone died actually in 1967 when
+那个有飞行员的东西的控制策略下降了，实际上有人在 1967 年死了，当时
+
+one of these crashed because they didn't understand the closed loop stability of
+其中一个坠毁了，因为他们
+
+this thing while it was doing online game tuning learning
+在进行在线游戏调整学习时不了解这个东西的闭环稳定性，
+
+um and then this is kind of a modern example of this right on a quadruped
+然后这是 这是一个现代的例子，四足动物
+
+doing doing the Deep learning version of this but it's really the same stuff
+正在做深度学习版本，但这实际上是相同的东西，嗯，他们在
+
+um the the online adaptation stuff they were doing it on you know
+网上适应的东西，你知道，
+
+um you know linear feedback policies in the 50s with online great in descent
+嗯，你知道 50 年代的线性反馈政策，在线很棒
+
+with various learning rules and now we're doing it on you know deep neural
+具有各种学习规则的血统，现在我们正在做这件事，你知道深度神经
+
+network policies but it's the same stuff like two in a mark remarkable degree and
+网络策略，但它与两个在显着程度上是相同的东西，
+
+if you talk to some people in the modern field who are doing the stuff they'll
+如果你与现代领域中正在做这些事情的一些人交谈，他们会说： 我会
+
+tell you that like that's really kind of the same ideas but now we're basically
+告诉你，这确实是相同的想法，但现在我们基本上是
+
+doing it on just bigger policies because we can because we have more compute
+在更大的政策上做到这一点，因为我们可以，因为我们有更多的计算权，
+
+right uh yeah so this is yeah this is the there's a direct lineage from that
+呃，是的，所以这是是的，这是有直接血统的，
+
+you know late 50s stuff to like current like modern sort of online RL kind of
+你知道 50 年代末的东西就像现在的现代在线 RL 算法一样，
+
+algorithms uh what else oh yeah this is great so okay robust
+呃还有什么，哦，是的，这太棒了，好吧，强大的
+
+control is it not so we have adaptation right we were trying to like adapt
+控制不是吗，所以我们有适应权利，我们试图喜欢
+
+online to miss modeled things whatever the other
+在线适应，以错过建模的东西，无论其他
+
+um big thread that came out this is one of the best control theory papers of all
+嗯 这是有史以来最好的控制理论论文之一，
+
+time you're all reading it I'll tell you about in a sec so this is robust control
+你们都在读它，我稍后会告诉你们，所以这是一个鲁棒的控制，
+
+which really started up in the 80s and uh coming off of like the high of you
+真正开始于 80 年代，呃，就像 你们
+
+know lqr Common filter all this great stuff people for a while thought in the
+知道 lqr 共同过滤所有这些伟大的东西，人们在
+
+60s and 70s thought that like um lqr you can prove mathematically that
+60 年代和 70 年代认为，像um lqr 一样，您可以从数学上证明
+
+lqr on its own has some natural robustness properties like it's
+lqr 本身具有一些天然的鲁棒性属性，例如它对
+
+naturally robust to mismodeled Dynamics so in this case in a linear system your
+错误建模的动力学具有天然的鲁棒性，因此 在线性系统中的这种情况下，你的
+
+A and B matrices if there's some errors in those things you have on model
+A 和 B 矩阵如果你在模型动力学上的这些东西中存在一些错误，
+
+Dynamics turns out lqr has you can prove that it has some really nice natural
+结果证明 lqr 可以证明它具有一些非常好的自然
+
+robustness properties to miss modeled stuff but it turns out and John Doyle
+鲁棒性属性，可以错过建模的东西，但事实证明，John Doyle
+
+who's still around he's a professor at Caltech he wrote this when he was a grad
+他仍然在身边，他是加州理工学院的教授，他在读研究生时写了这篇文章，
+
+student it was his first paper insane
+这是他的第一篇疯狂的论文，
+
+the this is so basically what he proved was that if you take a lqr controller
+这基本上就是他证明的，如果你使用一个 lqr 控制器
+
+and a Coleman filter and you hook them together so you have a closed loop lqg
+和一个科尔曼滤波器，然后将它们连接在一起，那么你 有一个闭环 lqg
+
+thing with both the common filter the state estimator and the the controller
+东西，带有公共滤波器、状态估计器和控制器，
+
+that can be arbitrarily brittle like arbitrarily sensitive to small
+它可以任意脆弱，比如对小
+
+model mismatch and that it has like no provable
+模型失配任意敏感，并且它没有任何可证明的
+
+robustness whatsoever and so what he basically did was papers provide a
+鲁棒性，所以他基本上所做的是论文提供了一些
+
+couple of counter examples showing that you could write down a couple of systems
+反例表明你可以
+
+with an Epsilon in them in the A's or B's such that that Epsilon for any
+在 A 或 B 中写下几个带有 Epsilon 的系统，这样 Epsilon 对于任何
+
+non-zero Epsilon infinitesimal Epsilon the thing would go unstable which is
+非零 Epsilon 无穷小 Epsilon都会变得不稳定，这
+
+kind of interesting so this paper basically founded an entire branch of
+很有趣，所以这篇论文基本上建立了 控制理论的一个完整分支，
+
+control theory called robust control linear robust control where people
+称为鲁棒控制线性鲁棒控制，人们
+
+started looking at how do we develop closed-loop control systems like this
+开始研究如何开发这样的闭环控制系统，
+
+where we can guarantee robustness to like bounded model errors so the flavor
+我们可以保证像有界模型误差这样的鲁棒性，所以
+
+of a lot of this work is I have this A and B the nominal A and B I'm going to
+很多这项工作的风格是我有 这个 A和 B 是名义上的 A 和 B 我
+
+say you know I can bound the error in a and b by I don't know 10 20 or like
+想说你知道我可以通过我不知道 10 20 或类似
+
+polytopic bounds on the entries or something like this and given those
+条目上的多面边界或类似的东西来限制 a 和 b 中的错误，并给定这些
+
+bounds I can now generate a feedback uh policy that is guaranteed to stabilize
+边界我 现在可以生成一个反馈呃策略，保证
+
+any system in those bounds so that you can go online you can guarantee things
+在这些范围内稳定任何系统，这样你就可以上网，你可以保证事情
+
+not going to be super brittle and blow up on you so that was kind of a lot of
+不会变得超级脆弱并在你身上爆炸，所以这是大量的
+
+the work in the 80s into the 90s in control theory was focused on this set
+工作 80 年代到 90 年代的控制理论主要集中在这组
+
+of ideas this kind of robust stuff is very hot for a while now there's a
+想法上，这种强大的东西非常热门，现在有一个
+
+Matlab toolbox that will just do it for you it's called H Infinity control yeah
+Matlab 工具箱可以为你做这件事，它被称为 H Infinity 控制，是的，
+
+cool so that but this paper is amazing like it's also like two pages long it's
+很酷，但是这篇论文是 令人惊奇的是，它也有两页长，
+
+like two counter examples there you go kind of awesome
+就像两个反例，有点棒，让我们
+
+um let's see if this will work okay um model predictive control we're gonna
+看看这是否可行，模型预测控制，我们将
+
+spend a lot of time in this class about this this sort of started in the 70s
+在这门课上花很多时间来讨论这个问题，这种开始于 70 年代，
+
+the idea here is you can solve an optimal control problem numerically
+这里的想法是你可以用数字方式解决最优控制问题，
+
+we're going to do a lot of that in this class
+我们将在这堂课上做很多这样的事情，
+
+um well if you can solve it really fast you can just do it online and that's
+嗯，如果你能很快解决它，你可以在网上完成，这就是
+
+your feedback policy you just keep resolving the optimal control problems
+你保留的反馈政策 以
+
+numerically if you can do it really really fast at say I don't know fifty
+数字方式解决最优控制问题如果你能非常快地做到这一点，比如说我不知道​​五
+
+hundred thousand Hertz then that's all you need you don't need any other kind
+十万赫兹，那么这就是你所需要的，你不需要任何其他类型
+
+of feedback policy that's the key idea and this really unsurprisingly also
+的反馈策略，这是关键思想，这也并不令人惊讶
+
+tracks with the history of computing basically like the idea is you're going
+跟踪计算的历史基本上就像这个想法是你要
+
+to solve and you just numerically Brute Force solve this optimal control problem
+解决的，你只是用数字蛮力以
+
+at real-time rates so this only really became possible as computers got fast uh
+实时速率解决这个最优控制问题，所以这只有在计算机变得更快时才真正成为可能，呃
+
+it started in the 70s actually in chemical engineering so which actually
+它实际上是在 70 年代开始的 在化学工程领域，所以它实际上
+
+has a long history and connection to CMU um
+有很长的历史并且与卡内基梅隆大学有联系，
+
+which uh yeah whole other conversation but basically the reason it started
+呃，是的，整个其他对话，但基本上它开始的原因
+
+there is that chemical plants are slow uh you only need to run your updates on
+是化工厂速度很慢呃，你只需要运行
+
+your control policy like once every 30 seconds or something really slow
+你的控制策略更新，比如每 30 次 几秒钟或非常慢的
+
+Dynamics so you could do this on an 80s vintage desktop computer no problem and
+动力学，所以你可以在 80 年代的老式台式计算机上做到这一点，没问题，
+
+just solve the control problem if it took 10 seconds to solve that's real
+只要解决控制问题，如果需要 10 秒才能解决，那是
+
+time you're good to go so it kind of started there it started to creep more
+实时的，你就可以开始了，所以它从那里开始它开始
+
+into robotics applications in the 2000s in robotics we need to run a lot faster
+在 2000 年代，更多地进入机器人应用程序在机器人技术中，我们显然需要运行得更快，
+
+obviously so as computers got faster and faster we started being able to do these
+因此随着计算机变得越来越快，我们开始能够
+
+things at tens of Hertz hundreds of Hertz in some instances you can now
+以数十赫兹数百赫兹的速度完成这些事情，在某些情况下，您现在可以
+
+solve decent size optimization problems for this kind of thing at kilohertz
+解决体面的尺寸优化问题千赫兹频率下的这类问题，
+
+rates so we can now do this stuff on quad rotors and like literally every
+所以我们现在可以在四旋翼上做这些事情，就像几乎每个
+
+robot ever is doing MPC now just about right so This Is How We Do driving you
+机器人都在做 MPC 现在差不多，所以这就是我们做的驾驶方式，你
+
+know walking parkour on Atlas uh drones pretty much
+知道在 Atlas 上行走跑酷无人机几乎
+
+everything's doing NPC now because the Computing has gotten fast enough to just
+所有东西都可以 现在做NPC是因为计算已经足够快了，可以正确
+
+solve it right um yeah cool so this is state of five
+解决它，嗯，是的，很酷，所以这是五
+
+years ago state of the art right like being able to do this kind of thing in
+年前的最先进技术，就像能够实时做这种事情一样，
+
+real time you can see you can throw obstacles in there and it'll resolve
+你可以看到你可以扔障碍 在那里，它将解决
+
+around the obstacles all kinds of fun things we're going to do this in class
+各种障碍，我们将在课堂上做这些有趣的事情，
+
+so you'll learn how to do this at least in Sim on a real deal quadrotor
+所以你至少会在真正的四旋翼飞行器上学习如何在模拟中做到这一点，
+
+um cool so this is fun stuff we're gonna spend a lot of time on this
+嗯很酷，所以这是我们有趣的东西 我们会花很多时间在这个问题上，
+
+um what else okay so parallel stuff that
+嗯，还有什么可以的，所以机器人技术中正在发生类似的事情，
+
+was going on in robotics around this time like in the 80s
+就像在 80 年代一样，
+
+um which we're not really going to talk about in here but which you've probably
+我们不会在这里讨论，但你可能已经
+
+heard of is stuff on like industrial manipulators on arms like this it turns
+听说过 就像手臂上的工业机械手一样，事实
+
+out the control methods here are way way different than what we're going to do
+证明这里的控制方法与我们要做的有很大不同，
+
+and what like kind of was happening in the control theory Community
+控制理论社区中正在发生类似的事情，
+
+um there's a big reason why these things are what we call fully actuated they
+嗯，这些事情有一个很大的原因是我们所说的完全驱动的，它们
+
+have the ability to Supply torque on every single joint in
+有能力为系统中的每个关节提供扭矩，
+
+the system so you can basically make this thing do whatever you want all the
+所以你基本上可以让这个东西一直做你想做的事情，
+
+time and if you think back to the mathematically what this corresponds to
+如果你回想一下数学上的意义，
+
+is if you remember the manipulator equation that we talked about we talked
+如果你还记得的话我们谈到的操纵器方程我们谈到
+
+about Dynamics and most of you've seen you know know this stuff really well
+了动力学，你们中的大多数人都知道你们非常了解这个东西，
+
+it's got math matrix right coriolis thing and then your bu control input
+它有数学矩阵，正确的科里奥利事物，然后是您的 bu 控制输入
+
+thing what this means is that this B Matrix that Maps controls into the
+事物，这意味着地图控制的 B 矩阵 进入
+
+Dynamics is full Rank and invertible what that means is if you want to know
+动态是满等级和可逆的，这意味着如果你想知道
+
+what you uh what your controls should be in this context because of this fully
+你在这种情况下你的控制应该是什么，因为这个完全
+
+actuated thing I can literally just write down an arbitrary trajectory a q
+驱动的东西我可以从字面上写下一个任意轨迹 a q
+
+of T and then I can just invert this guy and figure out what the controls are to
+of T 然后我可以 只要把这个家伙倒过来，弄清楚控制是做什么的，
+
+do that so it turns out for these industrial manipulators the control
+所以事实证明，对于这些工业机械手来说，控制
+
+problem is basically trivial and there's not a whole lot of you know stuff to do
+问题基本上是微不足道的，而且没有很多人知道要做的事情，
+
+that's a bunch of 80s vintage papers on this in the robotics Community doing
+这是一堆 80 年代的老式论文 机器人社区正在做
+
+things like what are called operational space control and things like this but
+诸如所谓的操作空间控制之类的事情，但
+
+they're all basically just invert the V Matrix and write down whatever you want
+它们基本上都只是反转 V矩阵并写下你想要的任何东西，
+
+and it just works so there's not a ton of interesting control there there isn't
+它就可以工作，所以没有大量有趣的控制。
+
+you know more now but this is kind of coming from
+你现在知道更多了，但这是从
+
+the robotics perspective now this stuff wasn't that interesting at least from my
+机器人技术的角度来看的，至少从我的角度来看，这个东西并不那么有趣，
+
+perspective but it does work cool stuff is though here
+但它确实有用，很酷的东西就在这里，
+
+so this has also started in the 80s legged robots so this top left guy is
+所以这也始于 80 年代的有腿机器人，所以这个左上角 这个家伙
+
+from the CMU leg lab which became the MIT leg lab which is Mark rabert which
+来自 CMU 腿部实验室，后来成为麻省理工学院腿部实验室，马克·拉伯特后来
+
+became Boston Dynamics this is what they were doing in the 80s which is awesome
+成为波士顿动力公司，这就是他们在 80 年代所做的事情，太棒了，
+
+these Hopper robots super cool super Dynamic and also super under actuated
+这些 Hopper 机器人超级酷，超级动态，而且超级欠驱动，
+
+right this thing's reasoning about it's balancing and all its Dynamics in a
+这就是这个东西的推理 它以一种
+
+really sophisticated way so this stuff's super cool same time was in Japan Honda
+非常复杂的方式实现平衡和所有动态，所以这个东西非常酷，同时在日本本田
+
+and lasada University were doing these humanoids with bipedal walking also
+和拉萨达大学正在做这些双足行走的类人动物，也
+
+really cool but using very very different approaches so the the raybert
+很酷，但使用了非常不同的方法，所以雷伯特的
+
+stuff is doing stuff that I would say is like very much in line with the kind of
+东西正在做的事情 我想说的是，这与
+
+things we're talking about and currently what BD is doing is very much the store
+我们正在讨论的事情非常一致，目前BD 正在做的事情与我们正在讨论的商店非常相似，您可以在
+
+we're talking about where you're reasoning about Dynamics and doing a lot
+其中推理 Dynamics 并进行
+
+of optimization stuff then it was like a lot of hand tuned stuff but you know
+大量优化工作 这就像很多手工调整的东西，但你知道
+
+that's where it was like a lot about the Dynamics right the passive dynamics of
+这就是很多关于系统被动动力学的动态的地方，
+
+the system whereas the Honda approach is very much rooted in this they were
+而本田的方法非常植根于此，他们
+
+basically trying to use the same techniques that used on an industrial
+基本上试图使用与使用相同的技术 用工业
+
+arm to control this guy and you can see it really visible in the differences and
+手臂来控制这个家伙，你可以看到它的差异非常明显，以及
+
+how these things look this guy's doing backflips this guy's walking like a
+这些东西看起来如何，这个家伙正在做后空翻，这个家伙像
+
+robot right like the classic will walk like a robot thing and that's because
+机器人一样行走，就像经典的一样，它会像机器人一样行走，那是因为
+
+what they're basically doing is it has really big honkered feet and they're
+它们是 基本上做的是它有非常大的鸣叫脚，他们
+
+basically saying whenever a foot's on the ground I'm going to pretend this
+基本上说，每当一只脚踩在地上时，我就会假装这个
+
+thing is a fixed-based manipulator like an industrial arm and I'm going to do
+东西是一个像工业手臂一样的固定机械臂，我会做
+
+the you know invert B trick to control it and as a result not reasoning at all
+你知道的反转 B 控制它的技巧，结果根本没有
+
+really about the Dynamics and so I'm walking super slow so that I don't have
+真正推理动力学，所以我走得超级慢，这样我就
+
+to reason about balancing or you know any of that stuff
+不必推理平衡，或者你知道任何这些东西，
+
+um and like you can model it as a as basically an industrial arm is what's
+嗯，就像你可以建模它 作为一个基本上是一个工业手臂，这就是那里
+
+going on there so uh if you know you know the more recent history of these
+正在发生的事情，所以呃，如果你知道你知道这些东西的最近历史，
+
+things you can kind of tell which approach one out
+你就可以分辨出哪种方法，嗯，
+
+um this the bottom right kind of peaked in the early 2000s with Asimo which
+右下角的那种方法在 2000 年代初与 Asimo 达到了顶峰，
+
+probably a lot of you seen that doesn't really exist anymore and obviously like
+可能你们很多人都看到这种方法已经不存在了，显然就像
+
+the the approach the rated approach resulted in Boston Dynamics which now we
+波士顿动力公司采用的评级方法一样，现在我们
+
+see lots of and so that's kind of the history of that there are kind of these
+看到了很多这样的方法，这就是
+
+two schools of you know legged robots for a long time
+你们这两所学校的历史 了解腿式机器人很长时间了，
+
+okay so yeah our stuff is going to be more more of the backflip variety and
+好吧，所以是的，我们的东西将更多的是后空翻品种，而
+
+less of the industrial arm variety
+不是工业手臂品种，
+
+cool legged robots uh what else oh yeah and then yeah just kind of fast
+酷腿机器人呃还有什么哦，是的，然后是的，只是快进
+
+forward content uh why is this not working right so this is you know fast
+内容呃为什么这是这样的工作不正常，所以这就是你知道的快
+
+forward a few years and this is what everyone's doing BD cheetah so BD and
+进几年，这就是每个人都在做的 BD cheetah，所以 BD 和
+
+Sheet are both doing MPC online which is we're going to talk about expliciting
+Sheet 都在在线进行 MPC，我们将讨论明确
+
+the class we're actually going to do some stuff on like a robots later in the
+我们实际上要做的课程
+
+class pretty explicitly tell you basically how cheetah works and then um
+课程后面的内容会非常明确地告诉你猎豹是如何工作的，然后嗯，
+
+there'll be a homework assignment on one of the last homeworks you'll do some
+最后的作业之一将会有一个家庭作业，你会做一些
+
+like at robot stuff and optimize some gates for a biped and Stefan if you want
+像机器人一样的事情，并为两足动物优化一些门，  Stefan，如果你想
+
+to do any projects in these kind of areas you're very welcome to there's
+在这些领域做任何项目，那么你非常欢迎，
+
+lots of cool things to do there um NPC wins
+那里有很多很酷的事情可以做，嗯 NPC 获胜，
+
+so under actually it means that at any instant in time you can't control all of
+所以实际上这意味着在任何时刻你都无法控制
+
+your degrees of freedom so for a floating bass like a robot you're always
+你的所有学位 因此，对于像机器人这样的浮动低音，您总是处于
+
+under actuated you may have Motors in all your joints but your floating base
+驱动状态，您的所有关节中可能都有电机，但是您的浮动基础
+
+degrees of freedom like the body you don't have instantaneous control over
+自由度像身体一样，您无法立即控制
+
+that right you can only control the body via you
+该权利，您只能控制身体 通过你
+
+know exerting forces against the the world right and so that's always under
+知道对世界施加力量，所以这总是处于
+
+actuated
+驱动状态，
+
+which one oh yeah yeah so it's true here too but
+哦是的，所以这里也是如此，但
+
+what you're doing is you're basically um whenever you have one foot on the
+你所做的是，每当你一只脚踩在
+
+ground you're modeling as if that foot is bolted to the ground and I have an
+你正在建模的地面上时，你基本上就是嗯 就好像那只脚用螺栓固定在地上，而我有一个
+
+industrial arm and so you you basically are simplifying
+工业手臂，所以你基本上是在使用控制器所做的事情方面简化
+
+a whole bunch of things down in terms of what you're doing with the
+了一大堆事情，
+
+controller so that you can reason about it like that which results in these very
+这样你就可以像结果一样进行推理 在这些
+
+robotic looking walking behaviors that just aren't very Dynamic right and
+看起来非常机器人的行走行为中，它们并不是非常动态，
+
+whatever is because of that it's because of the control techniques they're using
+无论是因为什么，都是因为他们使用的控制技术，
+
+um yeah it is definitely an under actuated
+嗯，是的，这绝对是一个欠驱动的
+
+system they're playing tricks with how they
+系统，他们正在玩弄他们如何嗯
+
+um how they operate the robot basically to like make it mostly fully actuated so
+如何的花招 他们操作机器人基本上是为了让它几乎完全启动，所以
+
+if you have one foot on the floor and it's a really big foot then you can
+如果你把一只脚放在地板上，而且它是一只非常大的脚，那么
+
+basically pretend it's fully actuated as long as you don't do anything super
+只要你不做任何超级
+
+Dynamic if you're like this in the air under actuated completely and so there's
+动态的事情，你基本上就可以假装它已经完全启动。 就像在完全驱动的空气中一样，所以有
+
+lots of things the other thing where you'll become in that situation you'll
+很多事情，你会在那种情况下变成另一件事，
+
+see osimo if you ever watch always walks like this with its knees bent it's
+如果你曾经看过，你会看到奥西莫总是像这样膝盖弯曲地走路，这是
+
+because of this if you straighten your knees out you become under actuated
+因为如果你伸直你的膝盖膝盖向外，你会变得动力不足，
+
+because I can there's a kinematic Singularity there right so that that
+因为我可以那里有一个运动学奇点，这
+
+makes you under actuated so you can like by watching these things you can kind of
+会让你动力不足，所以你可以喜欢通过观看这些东西，你可以
+
+pick out a lot of these little details that are like
+挑选出很多这些小细节，就像
+
+um coming from shortcuts for tricks people are playing
+嗯来自捷径一样 人们
+
+in the in the controller to avoid sort of having to reason fully about the
+在控制器中玩的技巧，以避免必须充分推理
+
+Dynamics like this those kinematic singularities if you're doing NPC if
+像这样的动力学，如果你在做NPC，如果
+
+you're doing this optimal control stuff you just don't care it doesn't matter
+你在做这个最佳控制的东西，你就不在乎它不关心那些运动奇点 没关系，
+
+but if you're doing this kind of like invert the B Matrix thing well if you
+但如果你做这种事情，比如反转 B 矩阵，如果你
+
+straighten your knees all the way out B becomes not invertible any and then you
+完全伸直膝盖，B就变得不可逆了，然后你
+
+can't do that right so okay uh what else yeah so that's a bunch of cool stuff
+就不能做对了，所以好吧，还有什么是的，所以这是一堆
+
+we're going to talk about a lot of this just kind of History stuff
+我们要谈论很多很酷的东西，这些只是历史的东西，
+
+um last like little notes for me challenges for the future
+最后就像我的小笔记一样，未来
+
+contact is always hard so like all this manipulation walking stuff super hard
+接触的挑战总是很困难，所以就像所有这些操纵步行的东西超级困难一样，
+
+I'm trying to mention that before another big one that like I think you
+我想提一下 在另一个大问题之前，我认为
+
+guys collectively in the room really have a chance to like dig into and I
+在座的各位真的有机会深入研究，我
+
+think my advice to you is um there's a big gap right now between
+想我给你们的建议是，嗯，现在
+
+people who do MPC and model based things and people who do RL and I don't think
+从事 MPC 和基于模型的事情的人和从事 MPC 和基于模型的事情的人之间存在很大差距 RL 和我认为不
+
+there should be but there is this historical divide there and there are
+应该存在，但那里存在历史鸿沟，
+
+very few people who speak both languages and know both Fields well enough to sort
+很少有人会说两种语言并且对这两个领域都足够了解，可以
+
+of cross that Gap and if you want to make an impact as a researcher right now
+跨越这一鸿沟，如果你想作为一名研究人员产生影响的话 现在
+
+in this area I would suggest getting really good at both sides and speaking
+在这个领域，我建议在双方都做得很好，并且说
+
+both languages there's like a huge amount of possibility in between there
+两种语言，两者之间有很大的可能性，
+
+and right now there are too few people who know both sides who can actually
+而且现在很少有人了解双方，能够真正
+
+bridge the gap so long term I would suggest maybe think about that as a
+弥合长期的差距，我建议也许可以考虑将其作为
+
+career move um and yeah so part of that is you know
+职业发展，嗯，是的，其中一部分是你知道，
+
+right now RL is famously inefficient data wise it needs too much data NPC
+现在 RL 是出了名的低效数据，它需要太多数据，
+
+stuff doesn't need any data so I think there's like a lot of of in between
+NPC 不需要任何数据，所以我认为有很多 在
+
+possibilities there right of like bridging these things to to make RL more
+可能性之间，有权利将这些东西桥接起来，使 RL 的
+
+data efficient uh stuff like that a perennial you know one that dates back
+数据效率更高，呃，像这样的东西，你知道，可以追溯到
+
+to this kind of robust control stuff is giving safety guarantees uh you can do
+这种鲁棒控制的东西，它可以提供安全保证，呃，你可以
+
+it for linear systems but those aren't very interesting practically speaking so
+对线性系统做到这一点，但是那些实际上并不是很有趣，所以
+
+safety guarantees on like uncertain non-linear system everything right cars
+安全保证就像不确定的非线性系统一样，一切都对汽车
+
+Etc especially cars is a big deal right cars and airplanes it's a really big
+等等，特别是汽车是一件大事，对汽车和飞机来说，这真的是一件
+
+deal because you have peoples in them but being able to give any kind of
+大事，因为里面有人，但能够提供任何类型的
+
+safety guarantee you know you're not going to like Hit The Pedestrian or
+安全保证，你知道你不会喜欢“撞行人”之
+
+whatever these are big deal kind of things right so if you can make a dent
+类的东西，这些都是大事，所以如果你能解决
+
+in that problem huge potential impact and then another
+这个问题，巨大的潜在影响，然后另一个
+
+one that's kind of fun is uh also relevant to driving dealing with other
+有趣的事情也与驾驶时要与其他
+
+possibly adversarial agents right so like reason about the behavior of other
+可能存在敌对的代理打交道，就像对其他
+
+humans or other autonomous cars right if you're out on the road this becomes a
+人类或其他自动驾驶汽车的行为进行推理一样，如果你在路上，这将成为一件
+
+huge deal you have to like be able to anticipate what other people around you
+大事，你必须喜欢能够预测周围其他人的
+
+are going to do we do this all the time when we drive and when we navigate
+去向 要做到这一点，我们在开车时、在
+
+crowds and all this kind of stuff but it's extremely hard to do uh in an
+人群中穿行时以及所有类似的事情时都会这样做，但是在自动驾驶堆栈中很难做到这一点，而且
+
+autonomy stack and it's a big sort of at its core that's an optimal control
+它的核心是一个很大的问题，即最优控制
+
+problem it becomes a game theoretic control problem which are very cool and
+问题，它变成了一个 博弈论控制问题非常酷并且
+
+have a long history but these are all I don't know kind of fun areas to look at
+有着悠久的历史，但这些都是我不知道的有趣领域，可以看看
+
+cool cool areas to poke around at for projects in here potentially
+很酷很酷的领域，可以在这里探索可能的项目，
+
+um and then also just cool things to look into if you're looking for research
+嗯，然后也只是很酷的东西看看 如果你正在寻找
+
+directions in general and like where did what to do with your
+一般的研究方向，比如你的生活在哪里做什么，
+
+life these are all like big deal problems for the field
+这些都是这个领域的大问题，
+
+cool yeah
+很酷，是的，
+
+I mean any of the above I mean if I don't have a perfect model and or the
+我的意思是上述任何一个，我的意思是如果我没有一个完美的模型 或者
+
+system is changing in time what do I do and can I guarantee that I won't blow up
+系统会及时改变我该怎么做，我能保证我不会爆炸
+
+and crash and kill someone
+、崩溃并杀死某人是的，好吧，
+
+yeah all right cool everybody any last
+大家都有最后的
+
+questions comments Etc all right cool let's do some more math
+问题评论等等，好吧，让我们做更多的数学
+
+[Music] hopefully that was enjoyable
+[音乐]希望 这真是令人愉快的
+
+entertaining okay I think I can make this work I think it
+娱乐，好吧，我想我可以完成这项工作，我认为它
+
+is working
+正在发挥作用，
+
+it's a little little palette cleanser to uh you know give you a break from math
+它是一个小小的调色板清洁剂，呃，你知道，让你从数学中休息一下，
+
+because we're going to do more math now uh if I can find my notes
+因为我们现在要做更多的数学，呃，如果我能找到我的笔记的话
+
+yeah
+是
+
+well it's it's a Dynamics model I mean it's the combination of robot and world
+的，这是一个动力学模型，我的意思是它是机器人和世界的结合，
+
+you know you should need you need to be able to like say really we talk about
+你知道你应该需要你需要能够说真的，我们
+
+model in the context of control it means some set of math you know that will tell
+在控制的背景下谈论模型，这意味着你知道的一些数学集会告诉你
+
+you what uh the outcome of your control moves will be it's basically something
+你的控制动作的结果基本上是
+
+that can predict what's going to happen if you do certain control moves right
+可以预测如果你正确执行某些控制动作将会发生什么这就是
+
+that that's what you need um call it a simulator call it a model
+你所需要的嗯称之为模拟器称之为模型
+
+call whatever you want right um I often find that there's a there's a
+调用任何你想要的正确的嗯我经常 当
+
+hang up on this terminology when you talk to RL people they use the word
+你与 RL 人员交谈时，你会发现这个术语存在一个障碍，他们使用
+
+environment and Simulator for things that we would just call a model and then
+环境和模拟器这个词来表示我们称之为模型的东西，然后
+
+when I say model they think it's something completely different than
+当我说模型时，他们认为这与
+
+their simulator but these are the same thing so those are all the same thing
+他们的模拟器完全不同，但是这些 是同一件事，所以这些都是同一件事，
+
+um yeah it's it's basically a thing that will predict what's going to happen if
+嗯，是的，如果
+
+you you know control the system a certain way right and then what we do if
+你知道以某种正确的方式控制系统，那么它基本上会预测会发生什么，然后如果
+
+you have that thing but optimal control is all about is saying okay cool now
+你有那个东西，但最佳控制是我们会做什么 一切都在说，好吧，酷，现在
+
+I'll take derivatives of that thing and you know use those derivatives to tweak
+我将采用那个东西的导数，你知道使用这些导数来调整
+
+my control to do something closer to I want right that's what Optical control
+我的控制，做一些更接近我想要的事情，这就是光学控制
+
+does and RL basically does the same thing but instead of taking derivatives
+所做的，RL 基本上做同样的事情，但不是采用导数
+
+you do stochastic gradients and this kind of thing right but it's the same
+你做随机梯度和这种事情是对的，但它的想法是相同的，是的，
+
+ideas right
+
+
+yeah it's I mean it's literally A and B are just these linearized things but
+我的意思是，从字面上看，A和B只是这些线性化的东西，但
+
+that F that's like think of the f as your whole simulator so it's whatever
+F就像将f视为你的整个模拟器，所以它是
+
+you need it to be for the task right sometimes it means it's like you know
+你需要它的任何东西有时它意味着你知道
+
+just f equals m a for like a quad rotor sometimes it's a model of like you know
+f 等于 m a 就像四转子有时它是一个模型，就像你知道
+
+some big humanoid and the box on the table and like you know whatever it's
+一些大的人形机器人和桌子上的盒子，就像你知道它
+
+got to pick up has to be in there right so it's it's a whole like kind of the
+要拾取的任何东西都必须 就在那里，所以它是一个
+
+world model of like the local environment as well right it's whatever
+像当地环境一样的世界模型，对吧，它是
+
+you need to predict the things you're trying to do
+你需要预测你想要做的事情的任何东西，
+
+okay cool
+好吧，是
+
+yeah we use model I think in like the mathematical sense of right like a set
+的，我们使用模型，我认为就像数学意义上的一样 就像一组
+
+of equations that tell you what's gonna happen
+方程，告诉你会发生什么，
+
+

@@ -1,0 +1,148 @@
+\section{Constrained Minimization}
+
+\subsection{Equality Constraints}
+
+\begin{equation}
+    \begin{aligned}
+        \min_x f(x) \\
+        \text{s.t.} \qquad c(x) = 0
+    \end{aligned}
+\end{equation}
+
+\begin{itemize}
+    \item First Order Necessary Conditions (NOT Sufficient):
+    \begin{itemize}
+        \item Need $\nabla f(x) = 0$ in free directions (take the gradient and project out of constrained directions and that have to be 0).
+        \item Need $c(x)=0$
+        \item[*] Any non-zero component of $\nabla f$ must be normal to the constraint surface/manifold:
+        \begin{equation}
+            \nabla f+\lambda\nabla c=0\qquad\lambda \in \mathbb{R}\text{ is the ``Lagrange multiplier'' or ``dual variable''}
+        \end{equation}
+        \item[*] In general:
+        \begin{equation}
+            \frac{\partial f}{\partial x} + \lambda^T \frac{\partial c}{\partial x} = 0\qquad\lambda \in \mathbb{R}^m
+        \end{equation}
+    \end{itemize}
+    \item Based on this gradient condition, we define ``Lagrangian'':
+    \begin{equation}
+        L(x,\lambda)=f(x)+\lambda^T c(x)
+    \end{equation}
+    \item Subject to KKT condition:
+    \begin{equation}
+        \begin{aligned}
+            \nabla_x L(x,\lambda)=&\nabla f+\nabla c \cdot \lambda=0\\
+            \nabla_\lambda L(x,\lambda)=&c(x)=0
+        \end{aligned}
+    \end{equation}
+    \item We can solve his with Newton:
+    \begin{equation}
+        \begin{aligned}
+            \nabla_x L(x+\Delta x, \lambda + \Delta \lambda) \approx & \nabla_x L(x,\lambda)+\frac{\partial^2L}{\partial x^2}\Delta x + \textcolor{red}{\frac{\partial^2 L}{\partial x\partial \lambda}}\Delta\lambda = 0 \\
+            =&\nabla_x L(x,\lambda)+\frac{\partial^2L}{\partial x^2}\Delta x + \textcolor{red}{\left(\frac{\partial c}{\partial x}\right)^T}\Delta\lambda \\
+            \nabla_\lambda L(x+\Delta x, \lambda + \Delta \lambda) \approx & c(x) + \frac{\partial c}{\partial x}\Delta x = 0 \\
+            \Rightarrow & \frac{\partial c}{\partial x}\Delta x=-c(x)
+        \end{aligned}
+    \end{equation}
+    \begin{equation}
+        \begin{bmatrix}
+            \dfrac{\partial^2L}{\partial x^2} & \left(\dfrac{\partial c}{\partial x}\right)^T \\[3mm]
+            \dfrac{\partial c}{\partial x} & 0
+        \end{bmatrix}
+        \begin{bmatrix}
+            \Delta x \\
+            \Delta \lambda
+        \end{bmatrix}
+        = 
+        \begin{bmatrix}
+            - \nabla_x L(x,\lambda) \\
+            -c(x)
+        \end{bmatrix}
+        \label{equ:kkt-system}
+    \end{equation}
+    Equation \eqref{equ:kkt-system} is called ``KKT System'', the system matrix is symmetric, and can be solved efficiently using many methods.
+    \item Gauss-Newton Method:
+    \begin{itemize}
+        \item Considering the matrix's upper left corner $\frac{\partial^2L}{\partial x^2}$:
+        \begin{equation}
+            \frac{\partial^2L}{\partial x^2}=\nabla^2f+\frac{\partial}{\partial x}\left[\left(\frac{\partial c}{\partial x}\right)^T\lambda\right]
+        \end{equation}
+        \item We often drop the 2nd ``constraint curvature'' term, since it is expensive to compute (can be a 3-dim tensor). This modified Newton is Gauss-Newton. If $c(x)$ is linear or linearized, Newton and Gauss-Newton are the same. This is also another perspective of Gauss-Newton, which linearize the constraints and then do Newton's method.
+        \item Slightly shower convergence than full Newton (more iterations) but each iteration's computation is cheaper (often wins in wall-clock time).
+    \end{itemize}
+    \item Example (\textcolor{blue}{I am so lazy that I write the component of the vector $x$ in a programming way}):
+    \begin{equation}
+        \begin{aligned}
+            \min_x f(x) = 0.5  \left(x-\begin{bmatrix}
+                1\\0
+            \end{bmatrix}\right)^T\begin{bmatrix}
+                0.5&0\\0&1
+            \end{bmatrix}\left(x-\begin{bmatrix}
+                1\\0
+            \end{bmatrix}\right) \\
+        \text{s.t.} \qquad x[0] ^2 + 2 \times x[0] - x[1] = 0
+        \end{aligned} 
+    \end{equation}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=.75]{./tex/ch4/2.pdf}
+        \caption{Starting From $x=(-1, -1)$, Succeed to Reach Optimum.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=.75]{./tex/ch4/3.pdf}
+        \caption{Starting From $x=(-3, 2)$, Get Stuck.}
+    \end{figure}
+    \item Why Newton gets stuck in some cases? We can find that the lagrangian's hessian matrix is the culprit: 
+    \begin{equation}
+        \dfrac{\partial^2L}{\partial x^2}=\begin{bmatrix}
+            -2.7 & 0 \\
+            0 & 1
+        \end{bmatrix}
+    \end{equation}
+    It is not positive definite. Even if we guarantee the hessian of $f(x)$ being positive, the constraint curvature term affect this property. So we have Gauss-Newton method, drop the bad term.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=.75]{./tex/ch4/4.pdf}
+        \caption{Gauss-Newton Method Starting From $x=(-3, 2)$, Succeed to Reach Optimum.}
+    \end{figure}
+    \item Note:
+    \begin{itemize}
+        \item Newton's method for \eqref{equ:kkt-system} may converge to maxima or saddle point even if $f$ is convex, because the KKT system may be non-convex, so we may still need to regularize $\frac{\partial^2 L}{\partial x^2}$ even if $\nabla^2f > 0$. So if you have to regularize anyway you might as well just drop that second term and it's cheaper and it's not going to have that problem.
+        \item Gauss-Newton is often used in practice, and may have super-linear convergence.
+    \end{itemize}
+\end{itemize}
+\subsection{Inequality Constraints}
+\begin{equation}
+    \begin{aligned}
+        \min_x f(x) \\
+        \text{s.t.} \qquad c(x) \le 0
+    \end{aligned}
+\end{equation}
+\begin{itemize}
+    \item We'll look at just inequalities for now (without equality). Just combine with previous methods to handle both kinds of constraints.
+    \item First Order Necessary Conditions:
+    \begin{itemize}
+        \item Need $\nabla f(x) = 0$ in free directions (take the gradient and project out of constrained directions and that have to be 0).
+        \item Need $c(x)\le 0$.
+        \item[*] The equality constraint makes constraint directions clear, both side is legal, but inequality constraint makes it harder, you have to handle the directions.
+    \end{itemize}
+    \item KKT Conditions
+    \begin{equation}
+        \begin{aligned}
+            \nabla f+\left(\frac{\partial c}{\partial x}\right)^T\lambda=&0 \qquad \text{stationary}\\
+            c(x)\le&0 \qquad \text{primal feasibility ($x$ is primal variable)} \\
+            \lambda \ge&0 \qquad \text{dual feasibility ($\lambda$ is dual variable)} \\
+            \lambda \odot  c(x) = \lambda^T c(x)=&0 \qquad \text{complementarity (Hadamard product, element-wise product)}
+        \end{aligned}
+    \end{equation}
+    \item Intuition:
+    \begin{itemize}
+        \item The local minima is either inside or outside (on the boundary) of the feasible set.
+        \item If constraint is ``active'' $\left(c(x) = 0\right)\Rightarrow\lambda>0$, same as equality case.
+        \item If constraint is ``inactive'' $\left(c(x) < 0\right)\Rightarrow\lambda=0$, same as unconstrained case.
+    \end{itemize}
+    \item Complementarity encodes ``on/off'' switching.
+    \item There is also an edge case when the minimum of the objective happens to be on the constraint manifold when $c(x) = \lambda =0$.
+    \item The term $\lambda c(x)$ in Lagrangian acts like a penalty, make sure sign is consistent (makes cost worse for $c(x)$ infeasible).
+    \item The first order condition of inequalities constraints is very complex in mathematics, and it introduce strong nonlineararity because of the complementarity (an if-else logic). KKT conditions only tells us what it looks like at the minima, but it does not tells how to iterate or optimize to get to the minima. How you solve the problem depends on the situation and the solver. There are several methods introduced later.
+\end{itemize}

@@ -1,0 +1,118 @@
+\section{Introduction to Nonlinear Trajectory Optimization}
+If the linearized dynamic model is not used and the problem is regarded as a nonlinear optimization problem, then:
+\begin{itemize}
+    \item There is no guarantee of convergence for nonlinear optimization problems, and a problem may not converge for a long time. If you want to make sure that the entire control system is reliable, you have to do something like Monte Carlo to make sure that the system doesn't get stuck in some weird position.
+    \item The linearized model performs well in most cases, and if some warm start strategies are added, the linearized optimization problem can converge quickly. Especially in the field of autonomous driving, linearized dynamics is common.
+\end{itemize}
+Linear model often works well, so use it if you can. Nonlinearity can work well in practice with effort.
+
+I personally believe that trajectory optimization based on DDP/iLQR method is also the result of linearization/quadratic fitting. In previous applications, we generally only linearized once in one iteration, while \textbf{in DDP, the system model and Cost were linearized/quadratic at each time point}, and then the analytical solution was derived using dynamic programming.
+
+Consider a general trajectory optimization / MPC problem (the difference between the two should only be the length of the horizon, if the horizon covers the whole trajectory, it is trajectory optimization, if only focuses on the trajectory in a short time window, the cost outside the window is determined by the heuristic function, then it is model predictive control) :
+
+\begin{equation}
+    \begin{aligned}
+        \min_{x_{1:N}, u_{1:N-1}} \  & J = \sum_{k=1}^{N-1} l_k(x_k, u_k) + l_N(x_N) \text{ non-convex cost} \\
+        \text{s.t.}\qquad \          & x_{n+1} = f(x_n,u_n) \text{ nonlinear dynamics}                       \\
+                                     & x_n \in X_n \text{ non-convex constraints}                            \\
+                                     & u_n \in U_n \text{ non-convex constraints}
+    \end{aligned}
+    \label{equ:nonlinear_problem}
+\end{equation}
+
+Usually assume costs and constraints are $C^2$ (Continuous 2nd derivatives).
+
+This section focuses on the DDP/iLQR algorithm to solve the \eqref{equ:nonlinear_problem} problem.
+
+\subsection{Differential Dynamic Programming (DDP)}
+
+The original DDP algorithm was proposed in the 1960s and then ``reinvent'' by robotics researchers around 2000, called iLQR (there is not much difference between the two algorithms) . The core idea of the DDP algorithm is:
+
+When LQR-DP was introduced earlier, an analytical solution could be obtained at each iteration (because of the linear system and the quadratic constraints), but for a general problem, the cost-to-go function $V_k(x)$ will become difficult to solve analytically (because it may be a very complex nonlinear high-dimensional function). In modern reinforcement learning, neural networks are used to approximate $V_k(x)$, while the DDP method uses the second-order Taylor expansion of $V_k(x)$, which enables DP to get analytic iterations for nonlinear problems. DDP is very popular due to its fast convergence.
+
+The cost-to-go function $V_k(x)$:
+\begin{equation}
+    \begin{aligned}
+        V_k(x + \Delta x) \approx V_k(x) + p_k^T \Delta x + \frac{1}{2}\Delta x^T P_k \Delta x \\
+        p_N = \nabla_x l_N(x), P_N = \nabla_{xx}^2 l_N(x)
+    \end{aligned}
+    \label{equ:ddp_v}
+\end{equation}
+
+Action-Value function $S_k(x_k,u_k)=l_k(x_k,u_k)+V_{k+1}(f(x_k,u_k))$:
+\begin{equation}
+    \begin{aligned}     S_k(x + \Delta x, u + \Delta u) \approx S_k(x, u) +     \begin{bmatrix}         g_x \\ g_u     \end{bmatrix}^T     \begin{bmatrix}         \Delta x \\ \Delta u     \end{bmatrix} +     \frac{1}{2}      \begin{bmatrix}         \Delta x \\ \Delta u     \end{bmatrix}^T     \begin{bmatrix}         G_{xx} & G_{xu} \\         G_{ux} & G_{uu}     \end{bmatrix}     \begin{bmatrix}         \Delta x \\ \Delta u     \end{bmatrix} ,(G_{xu} = G_{ux}^T) \end{aligned}
+\end{equation}
+
+Note that $f(x)$ is a vector function for which the first-order differential is Jacobian matrix, but the second-order differential is a three-dimensional tensor, and applying the chain rule to tensor is not straightforward, more on how to get each item is described below.
+
+From Bellman's principle we know that:
+\begin{equation}
+    \begin{aligned} 
+        V_{N-1}(x + \Delta x) & := \min_{\Delta u}[S_{N-1}(x, u) + g_x^T \Delta x + g_u^T \Delta u + \frac{1}{2} \Delta x^T G_{xx} \Delta x + \frac{1}{2} \Delta u^T G_{uu} \Delta u + \\ & \frac{1}{2} \Delta x^T G_{xu} \Delta u + \frac{1}{2} \Delta u^T G_{ux} \Delta x] 
+    \end{aligned}
+\end{equation}
+
+The optimal control can be obtained analytically
+
+\begin{equation}
+    \begin{aligned} \nabla_u V_{N-1}(x + \Delta x) & = g_u + G_{uu} \Delta u + G_{ux} \Delta x = 0 \\ \Rightarrow \Delta u_{N-1} & = -G_{uu}^{-1} g_u - G_{uu}^{-1}G_{ux}\Delta x = -d_{N-1} - K_{N-1} \Delta x \end{aligned}
+\end{equation}
+
+It can be seen that through DDP, in addition to the feedback control $- Kx$ like LQR, we also have a feedforward control $d$ result from first-order term of $V$. Substitute $\Delta u$ into $V$:
+
+\begin{equation}
+    \begin{aligned} V_{N-1}(x + \Delta x) &= V_{N-1}(x) + g_x^T \Delta x + g_u^T (-d_{N-1} - K_{N-1} \Delta x) + \\ &\frac{1}{2} \Delta x^T G_{xx} \Delta x + \frac{1}{2} (d_{N-1} + K_{N-1} \Delta x)^T G_{uu} (d_{N-1} + K_{N-1} \Delta x) - \\ &\frac{1}{2} \Delta x^T G_{xu} (d_{N-1} + K_{N-1} \Delta x) - \frac{1}{2} (d_{N-1} + K_{N-1} \Delta x)^T G_{ux} \Delta x  \end{aligned}
+\end{equation}
+
+rewrite and compare to \eqref{equ:ddp_v}, we get:
+
+\begin{equation}
+    \begin{aligned} P_{N-1} & = G_{xx} + K_{N-1}^T G_{uu} K_{N-1} - G_{xu} K_{N-1} - K_{N-1}^T G_{ux} \\ p_{N-1} & = g_x - K_{N-1}^T g_u + K_{N-1}^T G_{uu} d_{N-1} - G_{xu} d_{N-1} \end{aligned}
+\end{equation}
+
+Now we have the tensor form of iteration, but we still need some mathematic tricks to calculate $G$ and $g$ numerically.
+
+Given function $f(x): \mathbb{R}^n \to \mathbb{R}^m$, note its Taylor expansion:
+\begin{itemize}
+    \item if $m=1$:
+    \begin{equation}
+        \begin{aligned} f(x + \Delta x) \approx & f(x) + \frac{\partial f}{\partial x} \Delta x + \frac{1}{2}\Delta x^T \frac{\partial^2f}{\partial x^2}\Delta x \\ & \frac{\partial f}{\partial x} \in \mathbb{R}^{1 \times n} \\ & \frac{\partial^2f}{\partial x^2} \in \mathbb{R}^{n \times n} \end{aligned}
+    \end{equation}
+    \item if $m>1$:
+    \begin{equation}
+        \begin{aligned} f(x + \Delta x) \approx & f(x) + \frac{\partial f}{\partial x} \Delta x + \frac{1}{2}(\frac{\partial}{\partial x} [\frac{\partial f}{\partial x} \Delta x]) \Delta x \\ & \frac{\partial f}{\partial x} \in \mathbb{R}^{n \times m} \\ \end{aligned}
+    \end{equation}
+    $\frac{\partial^2f}{\partial x^2}$ is a 3rd-rank tensor. Think of this as a ``3D matrix''. We need some tricks to keep track of which dimensions we're multiplying along (left-right, up-down, front-back).
+\end{itemize}
+
+Therefore, some additional mathematical symbols are needed to perform this multiplication to ensure that we do not make mistakes when writing code:
+
+\begin{enumerate}
+    \item Kronnecker product:
+    \begin{equation}
+        \begin{aligned} A \otimes B = \begin{bmatrix} a_{11}B & a_{12}B & ... \\ a_{21}B & a_{22}B & ... \\ ... & ... & ... \\ \end{bmatrix} \\ A \in \mathbb{R}^{l \times m}, B \in \mathbb{R}^{n \times p}, A \otimes B \in \mathbb{R}^{ln \times mp} \end{aligned}
+    \end{equation}
+    \item Vectorization operator:
+    \begin{equation}
+        \begin{aligned} A = \begin{bmatrix} A_1 & A_2 & ... & A_m \end{bmatrix} \in \mathbb{R}^{l \times m}\\ vec(A) = \begin{bmatrix} A_1 \\ A_2 \\ ... \\ A_m \end{bmatrix} \in \mathbb{R}^{lm \times 1} \end{aligned}
+    \end{equation}
+    \item Some calculation tricks:
+    \begin{equation}
+        \begin{aligned} vec(ABC) & = (C^T \otimes A) vec(B) \ \ \ let \ C=I\\ \Rightarrow vec(AB) & = (B^T \otimes I) vec(A) = (I \otimes A) vec(B) \\ \frac{\partial A(x)}{\partial x} & = \frac{\partial vec(A)}{\partial x} \in \mathbb{R}^{lm \times n} \\ \frac{\partial}{\partial x} (A(x)^T B) & = (B^T \otimes I) T \frac{\partial A}{\partial x} \\ T * vec(A) & = vec(A^T) \end{aligned}
+    \end{equation}
+\end{enumerate}
+
+So we can calculate the 2nd-order Taylor expansion of a vector function:
+\begin{equation}
+    \begin{aligned} f(x + \Delta x) & \approx f(x) + \frac{\partial f}{\partial x} \Delta x + \frac{1}{2} (\Delta x^T \otimes I) \frac{\partial^2 f}{\partial x^2} \Delta x \qquad (A=\frac{\partial f}{\partial x},B=\Delta x) \\ & = f(x) + A \Delta x + \frac{1}{2} (\Delta x^T \otimes I) \frac{\partial vec(A)}{\partial x} \Delta x \end{aligned}
+\end{equation}
+
+
+Under such convention, the second-order Taylor expansion can be written simply by multiplying the second-order matrix.
+
+\begin{equation}
+    \begin{aligned}     S_k(x,u) & = l_k(x,u) + V_{k+1}(f(x,u)) \\     \Rightarrow \frac{\partial S}{\partial x} & = \frac{\partial l}{\partial x} + \frac{\partial v}{\partial x} \frac{\partial f}{\partial x} \Rightarrow g_x = \nabla_x l + A_k^T p_{k+1} \\     \Rightarrow \frac{\partial S}{\partial u} & = \frac{\partial l}{\partial u} + \frac{\partial v}{\partial x} \frac{\partial f}{\partial u} \Rightarrow g_u = \nabla_u l + B_k^T p_{k+1} \\     G_{xx} & = \frac{\partial g_x}{\partial x} = \nabla_{xx}^2 l(x,u) + A_k^T \nabla^2 V_{k+1} A_k + (p_{k+1}^T \otimes I) T \frac{\partial A_k}{\partial x} \\     G_{uu} & = \frac{\partial g_u}{\partial u} = \nabla_{uu}^2 l(x,u) + B_k^T \nabla^2 V_{k+1} B_k + (p_{k+1}^T \otimes I) T \frac{\partial B_k}{\partial u} \\     G_{xu} & = \frac{\partial g_x}{\partial u} = \nabla_{xu}^2 l(x,u) + A_k^T \nabla^2 V_{k+1} B_k + (p_{k+1}^T \otimes I) T \frac{\partial A_k}{\partial u} \\     & \text{(The last term of $$G$$ is often referred as "tensor term")} \end{aligned}
+\end{equation}
+
+Note that $\frac{\partial S}{\partial x}$ is a row vector, and a hessian can only be the derivative of colum vector to a colum vector, so first order derivative is in form of gradient: $g_x = \left(\frac{\partial S}{\partial x}\right)^T$.
