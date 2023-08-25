@@ -1,3 +1,6 @@
+# julia
+Manifest.toml
+
 *.bundle.*
 lib/
 node_modules/
